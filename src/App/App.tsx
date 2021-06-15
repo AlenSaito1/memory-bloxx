@@ -70,11 +70,11 @@ class Blocks {
 
         if (block?.el) {
             block.el.classList.add('light')
-            block.audio.currentTime = 0 // Reset the playing time, let audios be played in any time
+            block.audio.currentTime = 0 
             block.audio.play()
 
             setTimeout(() => {
-                if (!this.allOn) block.el.classList.remove('light') // "allOn" is a key to control the light off timing. In general, one of the lights will be turned off 0.1s after clicking, but when functions flashAndPlayAudio() and turnAllOn() being executed at the same time(when a player clicks wrong), this setTimeout() will be ignored and all lights will be turned off after 0.4s.
+                if (!this.allOn) block.el.classList.remove('light')
             }, 100)
         }
     }
@@ -96,9 +96,10 @@ class Blocks {
     }
 
     playSet = (type: string) => {
-        //eslint-disable-next-line
+        
+		//eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const sets = this.soundSets.find(obj => obj.name === type)!.sets
-        // console.log(sets);
+        
 
         sets.forEach(obj => {
             obj.currentTime = 0
@@ -121,7 +122,7 @@ class MemoryGame {
     currentLevel = 0
     replayTimes = 0
     playInterval = 400
-    mode = 'Waiting' // Progress in any level: 'Listening' => 'Inputting' => 'Waiting'
+    mode = 'Waiting' 
     userInput = ''
     timer!: NodeJS.Timeout
     constructor() {
@@ -134,9 +135,9 @@ class MemoryGame {
         }, 1000)
 
         this.blockElements.forEach(el => {
-            //eslint-disable-next-line
+			//eslint-disable-next-line @typescript-eslint/no-explicit-any
             el.addEventListener('click', (e: any) => {
-                //eslint-disable-next-line
+				//eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 this.checkInputs(e.target!.id)
             })
         })
@@ -151,12 +152,12 @@ class MemoryGame {
     startNewLevel() {
         this.replayTimes = 1
 
-        // At level 0(warming up level), the answer is always '1234'
+        
         if (this.currentLevel === 0) {
             this.levelString = '1234'
             this.statusElement.textContent = 'Click in the flashing order'
         } else {
-            // Add two random numbers at a higher level
+            
             for (let i = 0; i < 2; i++) {
                 this.levelString += this.createRandomNumber(1, 4)
             }
@@ -169,7 +170,7 @@ class MemoryGame {
         this.startListening()
     }
 
-    // Returns a random integer from a to b
+    
     createRandomNumber = (a: number, b: number) => {
         return Math.floor(Math.random() * b) + a
     }
@@ -181,25 +182,25 @@ class MemoryGame {
             el.classList.add('stopInputting')
         })
 
-        this.showinputProgressCircles('') // Not yet 'inputting', so put an empty string as a parameter
+        this.showinputProgressCircles('') 
 
         const notesArray = this.levelString.split('')
 
-        // Continuously take out one element from notesArray to play the corresponding sound
+        
         this.timer = setInterval(() => {
             const note = notesArray.shift()
 
-            // When audios playing done, player start to input
+            
             if (!notesArray.length) {
                 clearInterval(this.timer)
-                // console.log('Audios play end');
+                
 
                 setTimeout(() => {
                     this.startInputting()
                 }, this.playInterval)
             }
 
-            // console.log(note);
+            
             if (note) this.blocks.flashAndPlayAudio(note)
         }, this.playInterval)
     }
@@ -214,7 +215,7 @@ class MemoryGame {
         this.userInput = ''
     }
 
-    // Checking the player's input is correct or not. If correct, the level goes to the next one; if wrong, restart the game.
+    
     checkInputs(inputChar: string) {
         if (this.mode === 'Inputting') {
             const tempString = this.userInput + inputChar
@@ -223,11 +224,11 @@ class MemoryGame {
             this.showinputProgressCircles(tempString)
             this.blocks.flashAndPlayAudio(inputChar)
 
-            // Checking input one on one
+            
             if (this.levelString.indexOf(tempString) === 0) {
-                // console.log('So far good.');
+                
 
-                // If the player's input is completely same to this.levelString
+                
                 if (tempString === this.levelString) {
                     this.gameContinue()
                 }
@@ -237,11 +238,11 @@ class MemoryGame {
         }
     }
 
-    // When this.mode is 'inputting', show circle status below the blocks
+    
     showinputProgressCircles(tempString: string) {
         if (this.inputProgressElement) this.inputProgressElement.innerHTML = ''
 
-        // Updata circle div elements in any level
+        
         this.levelString.split('').forEach((data, index) => {
             this.inputProgressElement.innerHTML += `
 				<div class="circle${index < tempString.length ? ' correct' : ''}"></div>`
@@ -249,13 +250,13 @@ class MemoryGame {
 
         this.inputProgressElement.classList.remove('correct', 'wrong')
 
-        // If all inputs are correct, make circles blue
+        
         if (tempString === this.levelString) {
             setTimeout(() => {
                 this.inputProgressElement.classList.add('correct')
             }, this.playInterval)
         }
-        // If not, make circles red immediately
+        
         if (this.levelString.indexOf(tempString) !== 0) {
             this.inputProgressElement.classList.add('wrong')
         }
@@ -303,7 +304,7 @@ class MemoryGame {
     }
 
     gameOver() {
-        // console.log('Wrong.');
+        
         this.mode = 'Waiting'
         this.blocks.turnAllOn()
         this.blocks.playSet('wrong')
