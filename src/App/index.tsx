@@ -1,7 +1,7 @@
 import React, { FC, Fragment } from 'react'
 import { Helmet } from 'react-helmet'
 import Block from '../Components/Block'
-import './App.css'
+import './index.css'
 
 type TBlock = {
     selector: string
