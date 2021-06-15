@@ -336,7 +336,7 @@ const App: FC = () => {
 		</Helmet>
 	<div className="wrap">
       <div className="infos">
-        <h1 className="title">Memory Blocks</h1>
+        <h1 className="title">Memory Bloxx</h1>
         <h2 className="status">How to ?</h2>
       </div>
       <div className="columns">
