@@ -70,7 +70,7 @@ class Blocks {
 
         if (block?.el) {
             block.el.classList.add('light')
-            block.audio.currentTime = 0 
+            block.audio.currentTime = 0
             block.audio.play()
 
             setTimeout(() => {
@@ -96,10 +96,8 @@ class Blocks {
     }
 
     playSet = (type: string) => {
-        
-		//eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const sets = this.soundSets.find(obj => obj.name === type)!.sets
-        
 
         sets.forEach(obj => {
             obj.currentTime = 0
@@ -122,22 +120,22 @@ class MemoryGame {
     currentLevel = 0
     replayTimes = 0
     playInterval = 400
-    mode = 'Waiting' 
+    mode = 'Waiting'
     userInput = ''
     timer!: NodeJS.Timeout
     constructor() {
         this.events()
     }
 
-    events() {
+    events = () => {
         setTimeout(() => {
             this.startNewLevel()
         }, 1000)
 
         this.blockElements.forEach(el => {
-			//eslint-disable-next-line @typescript-eslint/no-explicit-any
+            //eslint-disable-next-line @typescript-eslint/no-explicit-any
             el.addEventListener('click', (e: any) => {
-				//eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 this.checkInputs(e.target!.id)
             })
         })
@@ -149,15 +147,13 @@ class MemoryGame {
         })
     }
 
-    startNewLevel() {
+    startNewLevel = () => {
         this.replayTimes = 1
 
-        
         if (this.currentLevel === 0) {
             this.levelString = '1234'
             this.statusElement.textContent = 'Click in the flashing order'
         } else {
-            
             for (let i = 0; i < 2; i++) {
                 this.levelString += this.createRandomNumber(1, 4)
             }
@@ -170,42 +166,37 @@ class MemoryGame {
         this.startListening()
     }
 
-    
     createRandomNumber = (a: number, b: number) => {
         return Math.floor(Math.random() * b) + a
     }
 
-    startListening() {
+    startListening = () => {
         this.mode = 'Listening'
 
         this.blockElements.forEach(el => {
             el.classList.add('stopInputting')
         })
 
-        this.showinputProgressCircles('') 
+        this.showinputProgressCircles('')
 
         const notesArray = this.levelString.split('')
 
-        
         this.timer = setInterval(() => {
             const note = notesArray.shift()
 
-            
             if (!notesArray.length) {
                 clearInterval(this.timer)
-                
 
                 setTimeout(() => {
                     this.startInputting()
                 }, this.playInterval)
             }
 
-            
             if (note) this.blocks.flashAndPlayAudio(note)
         }, this.playInterval)
     }
 
-    startInputting() {
+    startInputting = () => {
         this.mode = 'Inputting'
 
         this.blockElements.forEach(el => {
@@ -215,8 +206,7 @@ class MemoryGame {
         this.userInput = ''
     }
 
-    
-    checkInputs(inputChar: string) {
+    checkInputs = (inputChar: string) => {
         if (this.mode === 'Inputting') {
             const tempString = this.userInput + inputChar
 
@@ -224,11 +214,7 @@ class MemoryGame {
             this.showinputProgressCircles(tempString)
             this.blocks.flashAndPlayAudio(inputChar)
 
-            
             if (this.levelString.indexOf(tempString) === 0) {
-                
-
-                
                 if (tempString === this.levelString) {
                     this.gameContinue()
                 }
@@ -238,11 +224,9 @@ class MemoryGame {
         }
     }
 
-    
-    showinputProgressCircles(tempString: string) {
+    showinputProgressCircles = (tempString: string) => {
         if (this.inputProgressElement) this.inputProgressElement.innerHTML = ''
 
-        
         this.levelString.split('').forEach((data, index) => {
             this.inputProgressElement.innerHTML += `
 				<div class="circle${index < tempString.length ? ' correct' : ''}"></div>`
@@ -250,19 +234,18 @@ class MemoryGame {
 
         this.inputProgressElement.classList.remove('correct', 'wrong')
 
-        
         if (tempString === this.levelString) {
             setTimeout(() => {
                 this.inputProgressElement.classList.add('correct')
             }, this.playInterval)
         }
-        
+
         if (this.levelString.indexOf(tempString) !== 0) {
             this.inputProgressElement.classList.add('wrong')
         }
     }
 
-    gameContinue() {
+    gameContinue = () => {
         this.replayTimes = 1
         this.currentLevel += 1
         this.mode = 'Waiting'
@@ -282,7 +265,7 @@ class MemoryGame {
         }, this.playInterval + 600)
     }
 
-    replayCurrentLevel() {
+    replayCurrentLevel = () => {
         this.replayTimes -= 1
         this.mode = 'Waiting'
         this.blocks.turnAllOn()
@@ -303,8 +286,7 @@ class MemoryGame {
         }, this.playInterval + 600)
     }
 
-    gameOver() {
-        
+    gameOver = () => {
         this.mode = 'Waiting'
         this.blocks.turnAllOn()
         this.blocks.playSet('wrong')
