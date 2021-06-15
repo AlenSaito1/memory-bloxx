@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+Reimplimentation of [technoweirds](https://github.com/technoweirds)' [Memory Tunes](https://github.com/technoweirds/Memory-Tunes) in React TSX
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Live](/public/social-image.png)
 
 ## Available Scripts
 
