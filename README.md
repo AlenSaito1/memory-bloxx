@@ -1,4 +1,4 @@
-Reimplimentation of [technoweirds](https://github.com/technoweirds)' [Memory Tunes](https://github.com/technoweirds/Memory-Tunes) in React TSX
+Reimplementation of [technoweirds](https://github.com/technoweirds)' [Memory Tunes](https://github.com/technoweirds/Memory-Tunes) in React TSX
 
 ![Live](/public/social-image.png)
 
